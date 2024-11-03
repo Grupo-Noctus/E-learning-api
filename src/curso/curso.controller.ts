@@ -1,13 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseInterceptors, UploadedFile,Put, Patch, NotFoundException } from '@nestjs/common';
 import { CursoService } from './curso.service';
 import { CreateCursoDto } from './dto/create-curso.dto';
 import { UpdateCursoDto } from './dto/update-curso.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { Curso } from './entities/curso.entity';
 
-@Controller('curso')
+@Controller('cursos')
 export class CursoController {
   constructor(private readonly cursoService: CursoService) { }
+
+  @Get()
+  async getCursos(): Promise<Curso[]>{
+    const cursos = await this.cursoService.findAll();
+    if (!cursos){
+      throw new NotFoundException ("Nenhum curso cadastrado!!");
+    }
+    return cursos;
+  }
 
   @Post('creat')
   @UseInterceptors(
@@ -21,7 +31,6 @@ export class CursoController {
       }),
     }),
   )
-  
   async create(@Body() createCursoDto: CreateCursoDto, @UploadedFile() file: Express.Multer.File) {
     console.log('Received file:', file);
     if (!file) {
@@ -29,29 +38,23 @@ export class CursoController {
     }
     const curso = await this.cursoService.createCurso({...createCursoDto, imagem: file.filename});
     if(!curso){
-      throw new Error('Algum campo deve estar inválido!');
+      throw new NotFoundException ("Curso não encontrado!!")
     }
     return { message: 'Curso criado com sucesso!', curso}
   }
 
-
-  @Get()
-  findAll() {
-    return this.cursoService.findAll();
+  @Put('update/:id')
+  async update(@Body() updateCursoDto: UpdateCursoDto, @Param('id') id: number){
+    await this.cursoService.update(id, updateCursoDto);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cursoService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCursoDto: UpdateCursoDto) {
-    return this.cursoService.update(+id, updateCursoDto);
+  findOne(@Param('id') id: number) {
+    return this.cursoService.findOne(id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cursoService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.cursoService.remove(id);
   }
 }

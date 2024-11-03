@@ -5,5 +5,5 @@ export class UpdateCursoDto extends PartialType(CreateCursoDto) {
     titulo: string;
     descricao: string;
     imagem: string;
-    modulos: string;
+    modulos: string[];
 }
