@@ -31,7 +31,7 @@ export class CursoController {
       }),
     }),
   )
-  async create(@Body() createCursoDto: CreateCursoDto, @UploadedFile() file: Express.Multer.File) {
+  async create(@Body() createCursoDto: CreateCursoDto,  @UploadedFile() file: Express.Multer.File) {
     console.log('Received file:', file);
     if (!file) {
       throw new Error('No file uploaded!');
