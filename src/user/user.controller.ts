@@ -1,54 +1,43 @@
 import { Controller, Get, Post, Body, Param, Delete, NotFoundException, Put } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, Role } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
+import { RolesGuard } from 'src/auth/authUsers/role.guard';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
-  @Post('creat')
-  async create(@Body() createUserDto: CreateUserDto) {
-    const user = await this.userService.create(createUserDto);
-    if(! user){
-      throw new NotFoundException("Existe algum campo inválido!");
-    }
-    return {message: "Usuário cadastrado!", user};
+
+  @Post('create')
+  async createUser(@Body() createUserDto: CreateUserDto): Promise<{ message } | NotFoundException> {
+    await this.userService.create(createUserDto);
+    return { message: "Usuário cadastrado!" };
   }
 
   @Get()
-  async findAll() {
-    const users = await this.userService.findAll();
-    if(!users){
-      throw new NotFoundException("Nenhum usuário cadastrado!");
-    }
-    return users;
+  async getAllUser(): Promise<User[] | NotFoundException> {
+    return await this.userService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number) {
-    const user = await this.userService.findOne(id);
-    if(!user){
-      throw new NotFoundException(`O usuário de id: {id}, não exite`);
-    }
-    return user;
+  async findOneUser(@Param('id') id: number): Promise <User | NotFoundException> {
+    return await this.userService.findOne(id);
   }
 
   @Put(':id')
-  async update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
+  async updateUser(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     const user = await this.userService.update(id, updateUserDto);
-    if(!user){
-      throw new NotFoundException(`O usuário de id: {id}, não exite`);
-    }
-    return {message: "Usuário alterado!", user};
+    return { message: "Usuário alterado!", user };
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: number) {
+  async removeUser(@Param('id') id: number) {
     const user = await this.userService.remove(id);
-    if(!user){
+    if (!user) {
       throw new NotFoundException(`O usuário de id: {id}, não exite`);
     }
-    return {message: "Usuário deletado!", user};
+    return { message: "Usuário deletado!", user };
   }
 }

@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne, ManyToMany } from "typeorm";
-import { Modulo } from "./modulo.entity";
+import { CreateModuloDto } from "src/modulo/dto/create-modulo.dto";
+import { Modulo } from "src/modulo/entities/modulo.entity";
 import { User } from "src/user/entities/user.entity";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Curso {
@@ -16,15 +17,10 @@ export class Curso {
     @Column()
     imagem: string;
 
-    @OneToMany(() => Modulo, (modulo) => modulo.curso, { eager: true, cascade: true }) 
-    modulos: Modulo[];
+    @OneToMany(() => Modulo, (modulo) => modulo.curso) 
+    modulos: CreateModuloDto[];
 
-    @ManyToOne(()=> User, (prof)=> prof.cursos_ministrados, { eager: true, cascade: true })
-    prof: User;
-
-    @ManyToMany(()=> User, (aluno)=> aluno.cursos, { eager: true, cascade: true })
-    aluno: User;
-
-    @ManyToMany(()=> User, (adm)=> adm.cursos_ministrados, { eager: true, cascade: true })
-    adm: User;
+    @ManyToMany(() => User, (user) => user.cursos)
+    @JoinTable() 
+    users: User[];
 }
