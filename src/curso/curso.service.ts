@@ -1,35 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ModuloService } from 'src/modulo/modulo.service';
+import { Repository } from 'typeorm';
 import { CreateCursoDto } from './dto/create-curso.dto';
 import { UpdateCursoDto } from './dto/update-curso.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { Curso } from './entities/curso.entity';
-import { NotFoundException } from '@nestjs/common';
-import { Modulo } from './entities/modulo.entity';
 
 @Injectable()
 export class CursoService {
   constructor(
     @InjectRepository(Curso)
-    private cursoRepository: Repository<Curso>
-  ) {}
+    private readonly cursoRepository: Repository<Curso>,
+    private readonly moduloService: ModuloService
+  ) { }
 
-  async createCurso(cursoDTO: CreateCursoDto) { 
+  async createCurso(cursoDTO: CreateCursoDto): Promise<Curso> {
     const curso = new Curso();
     curso.titulo = cursoDTO.titulo;
     curso.descricao = cursoDTO.descricao;
     curso.imagem = cursoDTO.imagem;
 
-    if (cursoDTO.modulos) {
-      curso.modulos = cursoDTO.modulos.map(moduloDTO => {
-        const modulo = new Modulo();
-        modulo.titulo = moduloDTO.titulo;
-        modulo.descricao = moduloDTO.descricao;
-        modulo.ordem = moduloDTO.ordem;
+    const savedCurso = await this.cursoRepository.save(curso);
+
+    const modulos = await Promise.all(
+      cursoDTO.modulos.map(async (moduloDTO) => {
+        const modulo = await this.moduloService.createModulo(moduloDTO);
+        if (!curso) {
+          throw new NotFoundException("Não foi possivel cadastrar o curso.");
+        }
+        modulo.curso = savedCurso; 
         return modulo;
-      });
-    }
-    return this.cursoRepository.save(curso); 
+      })
+    );
+
+    savedCurso.modulos = modulos;
+
+    return savedCurso;
   }
 
   async update(id: number, updateCurso: UpdateCursoDto): Promise<Curso> {
@@ -38,13 +44,13 @@ export class CursoService {
     return this.cursoRepository.save(curso);
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<Curso> {
     const curso = await this.findOne(id);
     return this.cursoRepository.remove(curso);
   }
-  
-  findAll(): Promise<Curso[]> {
-    return this.cursoRepository.find();
+
+  async findAll(): Promise<Curso[]> {
+    return await this.cursoRepository.find();
   }
 
   async findOne(id: number): Promise<Curso> {

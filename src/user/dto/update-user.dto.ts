@@ -1,12 +1,23 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateUserDto } from './create-user.dto';
-import { Curso } from 'src/curso/entities/curso.entity';
+import { IsEmail, IsEnum, IsOptional, IsString, MinLength, ValidateNested } from "class-validator";
+import { Curso } from "src/curso/entities/curso.entity";
+import { Role } from "./create-user.dto";
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {
+export class UpdateUserDto {
+    @IsString({ message:'Não insira números em seu nome.' })
     nome: string
+
+    @IsEmail({}, { message:'Coloque um email valido!' })
     email: string;
+
+    @MinLength(6, { message: 'A senha deve possuir ao menos 6 caracteres!' })
     senha: string;
+
+    @IsEnum(Role)
+    role: Role;
+
+    @IsOptional()
     foto_perfil: string;
-    //validar como opcinal
+
+    @ValidateNested({ each: true })
     cursos: Curso[];
 }
