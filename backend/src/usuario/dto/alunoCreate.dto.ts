@@ -1,7 +1,11 @@
 import { Curso } from "src/curso/Entity/curso.entity";
-import { IsOptional } from "class-validator";
+import { IsOptional, IsArray, ValidateNested } from "class-validator";
+import { Type } from "class-transformer";
 
 export class AlunoCreateDTO {
-    @IsOptional()
-    cursos: Curso[];
+  @IsOptional() 
+  @IsArray() 
+  @ValidateNested({ each: true })
+  @Type(() => Curso)
+  cursos: Curso[];
 }

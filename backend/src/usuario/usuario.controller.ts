@@ -1,6 +1,6 @@
 import { Body, Controller, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { UsuarioService } from "./usuario.service";
-import { UsuarioCreateDTO } from "./dto/usuarioCreate.dto";
+import { UsuarioDTO } from "./dto/usuarioCreate.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import * as path from 'path';
 import { diskStorage } from "multer";
@@ -31,7 +31,7 @@ export class UsuarioController{
     @Post('criar')
     @UseInterceptors(getFileInterceptor('foto_perfil'))
     async criarUsuario(
-        @Body() usuarioDto: UsuarioCreateDTO,
+        @Body() usuarioDto: UsuarioDTO,
         @UploadedFile() file: Express.Multer.File,
     ): Promise<{ message: String }>{
         if (file) {

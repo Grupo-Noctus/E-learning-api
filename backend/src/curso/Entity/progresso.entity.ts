@@ -1,23 +1,20 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Status } from "./statusEnum";
 import { Modulo } from "./modulo.entity";
-import { Aluno } from "src/usuario/Entity/aluno.entity";
+import { Inscricao } from "./inscricao.entity";
 
 @Entity('progressos_modulos')
 export class Progresso {
     @PrimaryGeneratedColumn()
     id_progresso: number;
 
-    @ManyToOne(() => Aluno, (aluno) => aluno.progessos)
+    @ManyToOne(() => Inscricao, (inscricao) => inscricao.progresso, { eager: true })
     @JoinColumn()
-    aluno: Aluno;  
+    inscricao: Inscricao; 
 
     @ManyToOne(() => Modulo, (modulo) => modulo.progessos)
     @JoinColumn()
-    modulo: Modulo;  
-
-    @Column({ type: 'enum', enum: Status })
-    status: string;  
+    modulo: Modulo; 
 
     @CreateDateColumn()
     data_conclusao: Date;  

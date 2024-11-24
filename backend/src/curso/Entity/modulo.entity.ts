@@ -10,15 +10,15 @@ export class Modulo {
     id_modulo: number;
 
     @Column()
-    titulo: String;
+    titulo: string;
 
     @Column()
-    descricao: String;
+    descricao: string;
 
-    @Column({unique: true})
+    @Column()
     ordem: number;
 
-    @ManyToOne(() => Curso, (curso) => curso.modulos, { eager: true, cascade: true })
+    @ManyToOne(() => Curso, (curso) => curso.modulos, { eager: true, onDelete: 'CASCADE' })
     curso: Curso;
 
     @OneToMany(() => Progresso, (progresso) => progresso.modulo)

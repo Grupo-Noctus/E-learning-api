@@ -1,10 +1,11 @@
-import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Param, ParseIntPipe, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { CursoService } from './curso.service';
 import { CursoDTO } from './dto/curso.dto';
 import * as path from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { AvaliacaoDTO } from './dto/avaliacao.dto';
+import { CursoUpadateDTO } from './dto/cursoUpadate.dto';
 
 const uploadFolder = path.resolve(process.cwd(), './uploads');
 console.log('Caminho da pasta de uploads:', uploadFolder);
@@ -38,8 +39,19 @@ export class CursoController {
     }
     return await this.cursoService.criarCurso(cursoDto);
   }
+  
   @Post('avaliar')
   async avaliarCurso(@Body() avaliacaoDto: AvaliacaoDTO): Promise<{message: String}>{
     return await this.cursoService.avaliarCurso(avaliacaoDto);
+  }
+
+  @Put('editar/:id')
+  async editarCurso(@Param('id') id: number, @Body() cursoUpadateDto: CursoUpadateDTO): Promise<{ message: String}>{
+    return await this.cursoService.editarCurso(cursoUpadateDto, id);
+  }
+
+  @Delete('/deletar/:id')
+  async deletarCurso (@Param('id') id: number): Promise<{ message: String }>{
+    return await this.cursoService.deletarCurso(id);
   }
 }

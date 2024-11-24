@@ -1,24 +1,24 @@
-import { IsEmail, IsEnum, IsInstance, IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
-import { Papel } from "../Entity/papelEnum";
+import { IsString, IsNotEmpty, IsEmail, MinLength, MaxLength, IsEnum, IsOptional, IsInstance } from 'class-validator';
+import { Papel } from '../Entity/papelEnum';
 
-export class UsuarioCreateDTO {
-    @IsString()
-    @IsNotEmpty()
-    nome: String;
+export class UsuarioDTO {
+  @IsString()
+  @IsNotEmpty({ message: 'O nome do usuário é obrigatório.' })
+  nome: string;
 
-    @IsEmail()
-    @IsNotEmpty()
-    email: String;
+  @IsEmail({}, { message: 'O email fornecido é inválido.' })
+  @IsNotEmpty({ message: 'O email é obrigatório.' })
+  email: string;
 
-    @IsString()
-    @IsNotEmpty()
-    @MinLength(6, { message: "A senha deve conter pelo menos 6 caracteres." })
-    senha: String;
+  @IsString()
+  @IsNotEmpty({ message: 'A senha é obrigatória.' })
+  @MinLength(6, { message: 'A senha deve conter pelo menos 6 caracteres.' })
+  @MaxLength(20, { message: 'A senha pode ter no máximo 20 caracteres.' })
+  senha: string;
 
-    @IsEnum(Papel, { message: "O usuário pode ser: ADMIN, INSTRUTOR ou ALUNO." })
-    papel: Papel;
+  @IsEnum(Papel, { message: 'O papel deve ser um dos seguintes: ADMIN, INSTRUTOR ou ALUNO.' })
+  papel: Papel;
 
-    @IsOptional() 
-    @IsInstance(File, { message: 'Imagem deve ser um arquivo válido.' })
-    foto_perfil: String;
+  @IsOptional()
+  foto_perfil?: any;
 }

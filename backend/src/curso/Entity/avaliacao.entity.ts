@@ -14,7 +14,7 @@ export class Avaliacao {
     nota: number;
 
     @Column({ type: 'text', nullable: true })
-    comentário?: String;
+    comentário?: string;
 
     @CreateDateColumn()
     dara_avaliacao: Date;

@@ -10,7 +10,7 @@ export class Pergunta {
     atividade: Atividade;
 
     @Column()
-    enunciado: String;
+    enunciado: string;
 
     @Column({ type: 'enum', enum: ['objetiva', 'verdadeiro-falso'] })
     tipo: 'objetiva' | 'verdadeiro-falso';

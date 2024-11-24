@@ -1,18 +1,18 @@
-import { IsInstance, IsNotEmpty, IsOptional, IsString } from "class-validator";
-import { Instrutor } from "src/usuario/Entity/instrutor.entity";
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CursoDTO {
-    @IsNotEmpty()
-    @IsString()
-    titulo: String;
+  @IsNotEmpty({ message: 'O título é obrigatório.' })
+  @IsString({ message: 'O título deve ser uma string.' })
+  titulo: string;
 
-    @IsNotEmpty()
-    @IsString()
-    descricao: String;
+  @IsNotEmpty({ message: 'A descrição é obrigatória.' })
+  @IsString({ message: 'A descrição deve ser uma string.' })
+  descricao: string;
 
-    @IsOptional() 
-    @IsInstance(File, { message: 'Imagem deve ser um arquivo válido.' })
-    imagem: String;
+  @IsOptional()
+  @IsString({ message: 'A imagem deve ser um caminho válido (string).' })
+  imagem: string;
 
-    id_instrutor: number;
+  @IsNotEmpty({ message: 'O ID do instrutor é obrigatório.' }) 
+  id_instrutor: number;
 }

@@ -9,19 +9,19 @@ export class Usuario{
     id_usuario: number;
 
     @Column()
-    nome: String;
+    nome: string;
+
+    @Column({ unique: true })
+    email: string;
 
     @Column()
-    email: String;
-
-    @Column()
-    senha: String;
+    senha: string;
 
     @Column({ type: 'enum', enum: Papel })
     papel: Papel;
 
     @Column()
-    foto_perfil: String;
+    foto_perfil: string;
 
     @CreateDateColumn()
     data_criacao: Date;

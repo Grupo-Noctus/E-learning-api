@@ -11,11 +11,12 @@ import { ModuloService } from './modulo.service';
 import { Modulo } from './Entity/modulo.entity';
 import { ModuloController } from './modulo.controller';
 import { Avaliacao } from './Entity/avaliacao.entity';
+import { Progresso } from './Entity/progresso.entity';
 
 @Module({
   imports:[
     UsuarioModule,
-    TypeOrmModule.forFeature([Curso, Inscricao, Modulo, Avaliacao])
+    TypeOrmModule.forFeature([Curso, Inscricao, Modulo, Avaliacao, Progresso])
   ],
   controllers: [CursoController, InscricaoController, ModuloController],
   providers: [InscricaoService, CursoService, ModuloService]

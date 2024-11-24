@@ -10,15 +10,16 @@ export class AlunoService {
     private readonly alunoRepository: Repository<Aluno>,
   ) {}
 
-  async findAlunoById(matricula: number): Promise<Aluno> {
-    const aluno = await this.alunoRepository.findOne({
-      where: { matricula },
-    });
+  //refatoração ok
+  // async buscarAluno(matricula: number): Promise<Aluno> {
+  //   const aluno = await this.alunoRepository.findOne({
+  //     where: { matricula },
+  //   });
 
-    if (!aluno) {
-      throw new NotFoundException(`Aluno com matricula: ${matricula} não encontrado.`);
-    }
+  //   if (!aluno) {
+  //     throw new NotFoundException(`Aluno com matricula: ${matricula} não encontrado.`);
+  //   }
 
-    return aluno;
-  }
+  //   return aluno;
+  // }
 }

@@ -14,9 +14,6 @@ export class Aluno{
 
     @OneToMany(() => Inscricao, (inscricao) => inscricao.curso)
     inscricoes?: Inscricao[];
-
-    @OneToMany(() => Progresso, (progresso) => progresso.aluno)
-    progessos?: Progresso[];
     
     @OneToMany(() => Pontuacao, (pontuacao) => pontuacao.aluno)
     pontuacoes?: Pontuacao[];

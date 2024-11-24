@@ -9,18 +9,18 @@ export class Curso {
     id_curso: number;
 
     @Column()
-    titulo: String;
+    titulo: string;
 
     @Column()
-    descricao: String;
+    descricao: string;
 
     @Column()
-    imagem: String;
+    imagem: string;
 
-    @OneToMany(() => Modulo, (modulo) => modulo.curso)
+    @OneToMany(() => Modulo, (modulo) => modulo.curso, { cascade: true, onDelete: 'CASCADE' })
     modulos: Modulo[];
 
-    @OneToMany(() => Inscricao, (inscricao) => inscricao.curso)
+    @OneToMany(() => Inscricao, (inscricao) => inscricao.curso, { cascade: true, onDelete: 'CASCADE' })
     inscricoes: Inscricao[];
 
     @ManyToOne(() => Instrutor, (instrutor) => instrutor.cursos)
