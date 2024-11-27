@@ -3,13 +3,13 @@
         <v-layout class="overflow-visible" style="height: 56px">
             <v-bottom-navigation v-model="value" color="primary" active>
                 <v-btn to="/curso/edit">
-                    <v-icon :icon="Plus"></v-icon>
-                    <span>Add</span>
+                    <v-icon :icon="Pencil"></v-icon>
+                    <span>Edit</span>
                 </v-btn>
                 <v-btn to="/curso/add">
-                    <v-icon :icon="Pencil"></v-icon>
+                    <v-icon :icon="Plus"></v-icon>
 
-                    <span>Edit</span>
+                    <span>Add</span>
                 </v-btn>
             </v-bottom-navigation>
         </v-layout>

@@ -41,7 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import { ChevronsLeft, GraduationCap, LibraryBig } from 'lucide-vue-next'
 import { ref } from 'vue'
 
 const drawer = ref(true)
