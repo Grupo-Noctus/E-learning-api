@@ -2,7 +2,7 @@
     <v-form v-model="valid" @submit.prevent="submitForm">
         <v-container>
             <v-row>
-                <v-col cols="6">
+                <v-col cols="8">
                     <v-text-field
                         v-model="title"
                         :counter="50"
@@ -45,6 +45,7 @@ import { ref } from 'vue'
 import { Paperclip } from 'lucide-vue-next'
 import apiCurso from '../../api-curso'
 import type { TCurso } from '../../types/curso.types'
+import router from '@/router'
 
 const valid = ref<boolean>(false)
 const title = ref<string>('')
@@ -57,7 +58,7 @@ const titleRules = [
         return 'Title is required.'
     },
     (value: string) => {
-        if (value.length <= 10) return true
+        if (value.length <= 50) return true
         return 'Name must be less than 10 characters.'
     },
 ]
@@ -80,21 +81,26 @@ const fileRules = [
     },
 ]
 
-const submitForm = (e) => {
+const submitForm = () => {
     if (valid.value !== true || file.value === undefined || file.value === null) {
-        return console.log('campos inválidos ou restantes')
+        return alert('campos inválidos. Tente novamente')
     } else {
-        const inputform = {
-            title: title.value,
-            description: description.value,
-            imgCourse: file.value,
+        async function statusCreateCourse() {
+            const result = await apiCurso.postCourse(
+                title.value,
+                description.value,
+                file.value.toString(),
+            )
+
+            return result.status === 201 ? true : false
         }
 
-        const titleTeste = 'testeCurso'
-        const descriptionTeste = 'descrition'
-        const imgCourseTeste = 'https://loremflickr.com/640/480/business'
+        if (!statusCreateCourse()) {
+            alert('erro ao registrar curso')
+        }
 
-        apiCurso.postCourse(titleTeste, descriptionTeste, imgCourseTeste)
+        alert('sucesso ao registrar curso!!')
+        router.push({ name: 'Edit-curso' })
     }
 }
 </script>

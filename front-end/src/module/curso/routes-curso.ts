@@ -11,10 +11,12 @@ export const cursoRoutes: RouteRecordRaw[] = [
         children: [
             {
                 path: '/curso/add',
+                name: 'Add-curso',
                 component: AddCurso,
             },
             {
                 path: '/curso/edit',
+                name: 'Edit-curso',
                 component: EditCurso,
             },
         ],
