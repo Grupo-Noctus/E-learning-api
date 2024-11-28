@@ -1,4 +1,15 @@
-import { Body, Controller, Delete, Param, ParseIntPipe, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { CursoService } from './curso.service';
 import { CursoDTO } from './dto/curso.dto';
 import * as path from 'path';
@@ -18,7 +29,7 @@ export function getFileInterceptor(fieldName: string) {
       },
       filename: (req, file, cb) => {
         const nomeArquivo = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        cb(null, nomeArquivo + path.extname(file.originalname))
+        cb(null, nomeArquivo + path.extname(file.originalname));
       },
     }),
   });
@@ -28,30 +39,40 @@ export function getFileInterceptor(fieldName: string) {
 export class CursoController {
   constructor(private readonly cursoService: CursoService) {}
 
+  @Get('pegar-todos')
+  async pegarTodosCurso() {
+    return await this.cursoService.buscarTodosCurso();
+  }
+
   @Post('criar')
   @UseInterceptors(getFileInterceptor('imagem'))
-  async criarCurso (
+  async criarCurso(
     @Body() cursoDto: CursoDTO,
     @UploadedFile() file: Express.Multer.File,
-  ): Promise<{message: String}>{
+  ): Promise<{ message: String }> {
     if (file) {
       cursoDto.imagem = file.filename;
     }
     return await this.cursoService.criarCurso(cursoDto);
   }
-  
+
   @Post('avaliar')
-  async avaliarCurso(@Body() avaliacaoDto: AvaliacaoDTO): Promise<{message: String}>{
+  async avaliarCurso(
+    @Body() avaliacaoDto: AvaliacaoDTO,
+  ): Promise<{ message: String }> {
     return await this.cursoService.avaliarCurso(avaliacaoDto);
   }
 
   @Put('editar/:id')
-  async editarCurso(@Param('id') id: number, @Body() cursoUpadateDto: CursoUpadateDTO): Promise<{ message: String}>{
+  async editarCurso(
+    @Param('id') id: number,
+    @Body() cursoUpadateDto: CursoUpadateDTO,
+  ): Promise<{ message: String }> {
     return await this.cursoService.editarCurso(cursoUpadateDto, id);
   }
 
   @Delete('/deletar/:id')
-  async deletarCurso (@Param('id') id: number): Promise<{ message: String }>{
+  async deletarCurso(@Param('id') id: number): Promise<{ message: String }> {
     return await this.cursoService.deletarCurso(id);
   }
 }

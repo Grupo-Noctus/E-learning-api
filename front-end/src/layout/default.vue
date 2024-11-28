@@ -33,7 +33,7 @@
                     ></v-list-item>
                 </v-list>
             </v-navigation-drawer>
-            <v-main style="height: 100vh">
+            <v-main style="min-height: 100vh">
                 <RouterView />
             </v-main>
         </v-layout>
@@ -41,6 +41,7 @@
 </template>
 
 <script setup lang="ts">
+import { GraduationCap, LibraryBig, ChevronsLeft } from 'lucide-vue-next'
 import { ref } from 'vue'
 
 const drawer = ref(true)
