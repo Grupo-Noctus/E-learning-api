@@ -1,7 +1,12 @@
 <template>
     <div class="pa-3">
         <div v-for="each in courses" :key="each['id_curso']">
-            <card :title="each['titulo']" :description="each['descricao']" />
+            <card
+                :title="each['titulo']"
+                :description="each['descricao']"
+                :func-one="testeEdit"
+                :func-two="testeDelete"
+            />
         </div>
     </div>
 </template>
@@ -18,9 +23,16 @@ function getImageUrl(file: File) {
     return URL.createObjectURL(file)
 }
 
+const testeDelete = () => {
+    console.log('teste de delete')
+}
+
+const testeEdit = () => {
+    console.log('teste de edit')
+}
+
 onMounted(async function () {
     const coursePromisse = await apiCurso.getCourses()
-    console.log(coursePromisse.data[10]['imagem'])
     courses.value = coursePromisse.data
 })
 </script>

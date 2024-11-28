@@ -9,9 +9,9 @@
         </v-card-text>
 
         <v-card-actions>
-            <v-btn color="orange" text="edit"></v-btn>
+            <v-btn color="orange" text="edit" @click="funcOne"></v-btn>
 
-            <v-btn color="red" text="delete"></v-btn>
+            <v-btn color="red" text="delete" @click="funcTwo"></v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -21,6 +21,8 @@ defineProps<{
     title?: String
     description: String
     image?: string
+    funcOne: Function
+    funcTwo: Function
 }>()
 </script>
 

@@ -44,7 +44,6 @@
 import { ref } from 'vue'
 import { Paperclip } from 'lucide-vue-next'
 import apiCurso from '../../api-curso'
-import type { TCurso } from '../../types/curso.types'
 import router from '@/router'
 
 const valid = ref<boolean>(false)
