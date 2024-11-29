@@ -1,5 +1,5 @@
 
-import { Body, Controller, Delete, Param, Patch, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { CursoService } from './curso.service';
 import { CursoDTO } from './dto/curso.dto';
 import * as path from 'path';
@@ -27,7 +27,7 @@ export function getFileInterceptor(fieldName: string) {
 
 @Controller('curso')
 export class CursoController {
-  constructor(private readonly cursoService: CursoService) {}
+  constructor(private readonly cursoService: CursoService) { }
 
   @Get('pegar-todos')
   async pegarTodosCurso() {
@@ -57,12 +57,13 @@ export class CursoController {
   ): Promise<{ message: String }> {
     return await this.cursoService.avaliarCurso(avaliacaoDto);
   }
-
+  @Patch('editar/:id')
+  async editarCurso(@Param('id') id: number, @Body() cursoUpadateDto: CursoUpadateDTO): Promise<{ message: String}>{
     return await this.cursoService.editarCurso(cursoUpadateDto, id);
   }
 
   @Delete('/deletar/:id')
-  async deletarCurso(@Param('id') id: number): Promise<{ message: String }> {
+    async deletarCurso(@Param('id') id: number): Promise < { message: String } > {
     return await this.cursoService.deletarCurso(id);
   }
 }

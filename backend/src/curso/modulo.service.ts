@@ -170,6 +170,4 @@ export class ModuloService {
             await queryRunner.release();
         }
     }
-    
-    
 }
