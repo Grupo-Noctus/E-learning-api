@@ -44,6 +44,11 @@ export class CursoController {
     return await this.cursoService.buscarTodosCurso();
   }
 
+  @Get('buscar/:id')
+  async buscarCurso(@Param('id') id: number) {
+    return this.cursoService.buscarCurso(id);
+  }
+
   @Post('criar')
   @UseInterceptors(getFileInterceptor('imagem'))
   async criarCurso(

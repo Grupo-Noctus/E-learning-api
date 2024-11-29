@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2 class="text-center pa-3">Add Course</h2>
+        <h2 class="text-center pa-3">Edit Course</h2>
         <v-form v-model="valid" @submit.prevent="submitForm">
             <v-container>
                 <v-row>
@@ -44,15 +44,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { Paperclip } from 'lucide-vue-next'
-import apiCurso from '../../api-curso'
+import { useRoute } from 'vue-router'
+import apiCurso from '../../../api-curso'
 import router from '@/router'
 
 const valid = ref<boolean>(false)
 const title = ref<string>('')
 const description = ref<string>('')
 const file = ref<File | null>(null)
+
+const route = useRoute()
+
+const userId = Number(route.params.id)
+
+onMounted(() => {
+    async function getAllInfo(id_user: number) {
+        const infoUser = await apiCurso.getCoursesById(id_user)
+        if (infoUser.status != 200) {
+            return alert('Não foi possível pegar as informações do curso')
+        }
+
+        title.value = infoUser.data.titulo
+        description.value = infoUser.data.descricao
+    }
+
+    getAllInfo(userId)
+})
 
 const titleRules = [
     (value: string) => {
@@ -87,8 +106,9 @@ const submitForm = () => {
     if (valid.value !== true || file.value === undefined || file.value === null) {
         return alert('campos inválidos. Tente novamente')
     } else {
-        async function statusCreateCourse() {
-            const result = await apiCurso.postCourse(
+        async function statusCreateCourse(id: number) {
+            const result = await apiCurso.putCourses(
+                id,
                 title.value,
                 description.value,
                 file.value.toString(),
@@ -97,11 +117,11 @@ const submitForm = () => {
             return result.status === 201 ? true : false
         }
 
-        if (!statusCreateCourse()) {
+        if (!statusCreateCourse(userId)) {
             alert('erro ao registrar curso')
         }
 
-        alert('sucesso ao editar curso!!')
+        alert('sucesso ao registrar curso!!')
         router.push({ name: 'Edit-curso' })
     }
 }

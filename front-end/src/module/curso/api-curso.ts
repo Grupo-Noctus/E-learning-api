@@ -21,4 +21,21 @@ export default {
     getCourses() {
         return axiosInstance.get('/pegar-todos')
     },
+
+    getCoursesById(id: number) {
+        return axiosInstance.get(`/buscar/${id}`)
+    },
+
+    putCourses(id: number, title: string, description: string, imgCourse: string | null) {
+        return axiosInstance.put(`/editar/${id}`, {
+            titulo: title,
+            descricao: description,
+            imagem: imgCourse,
+            id_instrutor: 1,
+        })
+    },
+
+    deleteCourses(id: number) {
+        return axiosInstance.delete(`/deletar/${id}`)
+    },
 }

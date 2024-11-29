@@ -2,10 +2,12 @@
     <div class="pa-3">
         <div v-for="each in courses" :key="each['id_curso']">
             <card
+                :id="each['id_curso']"
                 :title="each['titulo']"
                 :description="each['descricao']"
-                :func-one="testeEdit"
-                :func-two="testeDelete"
+                :func-one="courseEdit"
+                :func-two="courseDelete"
+                :func-three="seeModules"
             />
         </div>
     </div>
@@ -15,26 +17,31 @@
 import { onMounted, ref } from 'vue'
 import card from '@/components/card.vue'
 import apiCurso from '../../api-curso'
+import router from '@/router'
 
 const courses = ref([])
-
-// Função para criar URL a partir de um objeto File
-function getImageUrl(file: File) {
-    return URL.createObjectURL(file)
-}
-
-const testeDelete = () => {
-    console.log('teste de delete')
-}
-
-const testeEdit = () => {
-    console.log('teste de edit')
-}
 
 onMounted(async function () {
     const coursePromisse = await apiCurso.getCourses()
     courses.value = coursePromisse.data
 })
+
+const courseEdit = async function (id_curso: number): Promise<void> {
+    router.push({ name: 'Edit-curso-form', params: { id: id_curso } })
+}
+
+const courseDelete = async function (id: number): Promise<void> {
+    const statusDelete = (await apiCurso.deleteCourses(id)).status
+    if (statusDelete !== 200) return alert('Não foi possível deletar o curso')
+
+    alert('curso deletado com sucesso!')
+    return location.reload()
+}
+
+
+const seeModules = async function (id: number): Promise<void> {
+    router.push({name: })
+}
 </script>
 
 <style scoped></style>
