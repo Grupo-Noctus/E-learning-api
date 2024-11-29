@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { DataSource, Repository } from "typeorm";
+import { DataSource, In, Repository } from "typeorm";
 import { Modulo } from "./Entity/modulo.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ModuloDTO } from "./dto/modulo.dto";
@@ -68,7 +68,12 @@ export class ModuloService {
         await queryRunner.startTransaction();
 
         try {
-            const inscricao = await queryRunner.manager.findOne(Inscricao, { where: { id_inscricao: progressoDto.id_inscricao } })
+            const inscricao = await queryRunner.manager.findOne(Inscricao, { 
+                where: { 
+                    id_inscricao: progressoDto.id_inscricao 
+                }, 
+                relations: ['curso'],
+            })
             if (!inscricao) { throw new NotFoundException(`A inscrição de id ${progressoDto.id_inscricao} não existe.`); }
             console.log('ProgressoDTO recebido:', progressoDto);
             console.log('Inscrição encontrada:', inscricao);
@@ -87,9 +92,6 @@ export class ModuloService {
                 inscricao: inscricao,
                 modulo: moduloCurso
             })
-
-            inscricao.status = Status.CONCLUIDO;
-            await queryRunner.manager.save(inscricao);
 
             await queryRunner.manager.save(Progresso, novoProgresso)
             await queryRunner.commitTransaction();
@@ -126,4 +128,48 @@ export class ModuloService {
             await queryRunner.release();
         }
     }
+
+    async reordenarModulos(cursoId: number, novosModulos: { id_modulo: number, ordem: number }[]): Promise<{ message: String}> {
+        const queryRunner = this.dataSource.createQueryRunner();
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+    
+        try {
+            const curso = await queryRunner.manager.findOne(Curso, { where: { id_curso: cursoId } });
+            if (!curso) {
+                throw new Error('Curso não encontrado');
+            }
+    
+            const modulosIds = novosModulos.map(modulo => modulo.id_modulo);
+            const modulos = await queryRunner.manager.find(Modulo, {
+                where: { id_modulo: In(modulosIds), curso: curso },
+            });
+    
+            if (modulos.length !== novosModulos.length) {
+                throw new Error('Um ou mais módulos não pertencem ao curso ou não existem');
+            }
+
+            const ordens = novosModulos.map(modulo => modulo.ordem);
+            const ordensUnicas = new Set(ordens);
+            if (ordens.length !== ordensUnicas.size) {
+                throw new Error('As ordens fornecidas não são únicas');
+            }
+            novosModulos.sort((a, b) => a.ordem - b.ordem);
+    
+            for (const { id_modulo, ordem } of novosModulos) {
+                await queryRunner.manager.update(Modulo, { id_modulo }, { ordem });
+            }
+
+            await queryRunner.commitTransaction();
+            return { message: "Modulos reordenados"};
+        } catch (error) {
+            await queryRunner.rollbackTransaction();
+            console.log("Erro ao reordenar módulos:", error);
+            throw new Error(error.message || "Não foi possível reordenar os módulos");
+        } finally {
+            await queryRunner.release();
+        }
+    }
+    
+    
 }

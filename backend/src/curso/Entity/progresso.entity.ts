@@ -1,5 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Status } from "./statusEnum";
+import { CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Modulo } from "./modulo.entity";
 import { Inscricao } from "./inscricao.entity";
 
@@ -8,11 +7,11 @@ export class Progresso {
     @PrimaryGeneratedColumn()
     id_progresso: number;
 
-    @ManyToOne(() => Inscricao, (inscricao) => inscricao.progresso, { eager: true })
+    @ManyToOne(() => Inscricao, (inscricao) => inscricao.progresso, { onDelete: 'CASCADE' })
     @JoinColumn()
     inscricao: Inscricao; 
 
-    @ManyToOne(() => Modulo, (modulo) => modulo.progessos)
+    @ManyToOne(() => Modulo, (modulo) => modulo.progessos, { onDelete: 'CASCADE' })
     @JoinColumn()
     modulo: Modulo; 
 

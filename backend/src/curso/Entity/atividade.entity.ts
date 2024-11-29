@@ -7,7 +7,7 @@ export class Atividade {
     @PrimaryGeneratedColumn()
     id_atividade: number;
 
-    @OneToOne(() => Modulo, (modulo) => modulo.atividade)
+    @OneToOne(() => Modulo, (modulo) => modulo.atividade, { onDelete: 'CASCADE' })
     @JoinTable()
     modulo: Modulo;
 

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Curso } from './Entity/curso.entity';
 import { DataSource, Repository } from 'typeorm';
@@ -117,12 +117,12 @@ export class CursoService {
           id_curso: id
         }
       });
-      await queryRunner.manager.delete(Curso, { id_curso: id });
 
       if (!cursoDeletar) {
         throw new BadRequestException(`Curso com id ${id} não encontrado.`)
       }
 
+      await queryRunner.manager.delete(Curso, { id_curso: id });
       await queryRunner.commitTransaction();
       return {message: "O curso foi delatado, junto com suas inscrições e modulos."}
     }catch(error){

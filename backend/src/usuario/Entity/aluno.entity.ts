@@ -1,21 +1,15 @@
-import { Entity, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Usuario } from "./usuario.entity";
 import { Inscricao } from "src/curso/Entity/inscricao.entity";
-import { Progresso } from "src/curso/Entity/progresso.entity";
-import { Pontuacao } from "src/curso/Entity/pontuacao.entity";
 
 @Entity('estudantes')
 export class Aluno{
     @PrimaryGeneratedColumn()
     matricula: number;
 
-    @OneToOne(() => Usuario, (usuario) => usuario.aluno)
+    @OneToOne(() => Usuario, (usuario) => usuario.aluno, {onDelete: 'CASCADE'})
     usuario: Usuario;
 
-    @OneToMany(() => Inscricao, (inscricao) => inscricao.curso)
+    @OneToMany(() => Inscricao, (inscricao) => inscricao.curso, { nullable: true })
     inscricoes?: Inscricao[];
-    
-    @OneToMany(() => Pontuacao, (pontuacao) => pontuacao.aluno)
-    pontuacoes?: Pontuacao[];
-
 }

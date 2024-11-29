@@ -17,13 +17,13 @@ export class Curso {
     @Column()
     imagem: string;
 
-    @OneToMany(() => Modulo, (modulo) => modulo.curso, { cascade: true, onDelete: 'CASCADE' })
+    @OneToMany(() => Modulo, (modulo) => modulo.curso)
     modulos: Modulo[];
 
-    @OneToMany(() => Inscricao, (inscricao) => inscricao.curso, { cascade: true, onDelete: 'CASCADE' })
-    inscricoes: Inscricao[];
+    @OneToMany(() => Inscricao, (inscricao) => inscricao.curso, { nullable: true })
+    inscricoes?: Inscricao[];
 
-    @ManyToOne(() => Instrutor, (instrutor) => instrutor.cursos)
+    @ManyToOne(() => Instrutor, (instrutor) => instrutor.cursos, { onDelete: 'SET NULL', nullable: true })
     @JoinColumn()
     instrutor: Instrutor;
 }

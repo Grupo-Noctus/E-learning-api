@@ -1,9 +1,10 @@
-import { Body, Controller, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Patch, Post, Put, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { UsuarioService } from "./usuario.service";
 import { UsuarioDTO } from "./dto/usuarioCreate.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import * as path from 'path';
 import { diskStorage } from "multer";
+import { UsuarioUpadateDTO } from "./dto/usuarioUpdate.dto";
 
 const uploadFolder = path.resolve(process.cwd(), './uploads');
 console.log('Caminho da pasta de uploads:', uploadFolder);
@@ -38,5 +39,15 @@ export class UsuarioController{
             usuarioDto.foto_perfil = file.filename;
           }
         return await this.usuarioService.criarUsuario(usuarioDto);
+    }
+
+    @Patch('editar/:id')
+    async editarUsuario(@Param('id') id: number, @Body() usuarioUpdate: UsuarioUpadateDTO): Promise<{ message: String}>{
+      return await this.usuarioService.editarusuario(id, usuarioUpdate);
+    }
+
+    @Delete('deletar/:id')
+    async deletarUsuario(@Param('id') id: number): Promise<{ message: String}>{
+      return await this.usuarioService.deletarUsuario(id);
     }
 }

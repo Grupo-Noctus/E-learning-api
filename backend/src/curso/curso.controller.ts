@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, ParseIntPipe, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Patch, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { CursoService } from './curso.service';
 import { CursoDTO } from './dto/curso.dto';
 import * as path from 'path';
@@ -45,7 +45,7 @@ export class CursoController {
     return await this.cursoService.avaliarCurso(avaliacaoDto);
   }
 
-  @Put('editar/:id')
+  @Patch('editar/:id')
   async editarCurso(@Param('id') id: number, @Body() cursoUpadateDto: CursoUpadateDTO): Promise<{ message: String}>{
     return await this.cursoService.editarCurso(cursoUpadateDto, id);
   }

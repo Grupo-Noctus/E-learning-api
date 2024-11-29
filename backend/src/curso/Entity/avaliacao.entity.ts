@@ -6,7 +6,7 @@ export class Avaliacao {
     @PrimaryGeneratedColumn()
     id_avalicao: number;
 
-    @OneToOne (() => Inscricao, {eager: true})
+    @OneToOne (() => Inscricao, {onDelete: 'CASCADE'})
     @JoinColumn()
     inscricao: Inscricao;
 
@@ -17,5 +17,5 @@ export class Avaliacao {
     comentário?: string;
 
     @CreateDateColumn()
-    dara_avaliacao: Date;
+    data_avaliacao: Date;
 }
