@@ -38,9 +38,8 @@ const courseDelete = async function (id: number): Promise<void> {
     return location.reload()
 }
 
-
-const seeModules = async function (id: number): Promise<void> {
-    router.push({name: })
+const seeModules = async function (id_curso: number): Promise<void> {
+    router.push({ name: 'Modules', params: { id: id_curso } })
 }
 </script>
 
