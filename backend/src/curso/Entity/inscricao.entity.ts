@@ -1,21 +1,20 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Curso } from "./curso.entity";
 import { Aluno } from "src/usuario/Entity/aluno.entity";
 import { Status } from "./statusEnum";
 import { Certificado } from "./certificado.entity";
 import { Progresso } from "./progresso.entity";
 
-@Entity('inscricoes_curso')
-@Entity('inscricoes_curso')
+@Entity('inscricoes_cursos')
 export class Inscricao {
     @PrimaryGeneratedColumn()
     id_inscricao: number;
 
-    @ManyToOne(() => Aluno, (aluno) => aluno.inscricoes)
+    @ManyToOne(() => Aluno, (aluno) => aluno.inscricoes, { onDelete: 'CASCADE' })
     @JoinColumn()
     aluno: Aluno;
 
-    @ManyToOne(() => Curso, (curso) => curso.inscricoes, { eager: true, onDelete: 'CASCADE' })
+    @ManyToOne(() => Curso, (curso) => curso.inscricoes, { onDelete: 'CASCADE' })
     @JoinColumn()
     curso: Curso; 
 
@@ -25,9 +24,9 @@ export class Inscricao {
     @Column({ type: 'enum', enum: Status, default: Status.EMANDAMENTO })
     status: Status;
 
-    @OneToMany(() => Progresso, (progresso) => progresso.inscricao)
-    progresso: Progresso[];
+    @OneToMany(() => Progresso, (progresso) => progresso.inscricao, { nullable: true })
+    progresso?: Progresso[];
 
-    @OneToOne(() => Certificado, (certificado) => certificado.inscricao)
+    @OneToOne(() => Certificado, (certificado) => certificado.inscricao, { nullable: true })
     certificado?: Certificado;
 }

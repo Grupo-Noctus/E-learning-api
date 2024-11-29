@@ -20,17 +20,17 @@ export class Usuario{
     @Column({ type: 'enum', enum: Papel })
     papel: Papel;
 
-    @Column()
-    foto_perfil: string;
+    @Column({ nullable: true })
+    foto_perfil?: string;
 
     @CreateDateColumn()
     data_criacao: Date;
 
-    @OneToOne(() => Aluno, (aluno) => aluno.matricula, { cascade: true, nullable: true })
+    @OneToOne(() => Aluno, (aluno) => aluno.matricula, { nullable: true, eager: true })
     @JoinColumn()
     aluno?: Aluno;
 
-    @OneToOne(() => Instrutor, (Instrutor) => Instrutor.id_instrutor, { cascade: true, nullable: true })
+    @OneToOne(() => Instrutor, (Instrutor) => Instrutor.id_instrutor, { nullable: true, eager: true, onDelete: 'CASCADE' })
     @JoinColumn()
     instrutor?: Instrutor;
 }

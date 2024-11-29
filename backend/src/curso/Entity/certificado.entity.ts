@@ -1,12 +1,12 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Inscricao } from "./inscricao.entity";
 
-@Entity('certificados')
+@Entity('certificados_inscricoes')
 export class Certificado {
     @PrimaryGeneratedColumn()
     id_certificado: number;
 
-    @ManyToOne(() => Inscricao, (inscricao) => inscricao.certificado)
+    @ManyToOne(() => Inscricao, (inscricao) => inscricao.certificado, { onDelete: 'CASCADE' })
     @JoinColumn()
     inscricao: Inscricao;
 

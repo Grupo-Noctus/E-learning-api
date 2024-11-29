@@ -18,16 +18,16 @@ export class Modulo {
     @Column()
     ordem: number;
 
-    @ManyToOne(() => Curso, (curso) => curso.modulos, { eager: true, onDelete: 'CASCADE' })
+    @ManyToOne(() => Curso, (curso) => curso.modulos, { onDelete: 'CASCADE' })
     curso: Curso;
 
-    @OneToMany(() => Progresso, (progresso) => progresso.modulo)
+    @OneToMany(() => Progresso, (progresso) => progresso.modulo, { nullable: true})
     progessos?: Progresso[];
 
-    @OneToOne(() => Atividade, (atividade) => atividade.modulo, { nullable: true })
+    @OneToOne(() => Atividade, (atividade) => atividade.modulo, { nullable: true})
     atividade?: Atividade;
 
-    @OneToMany(() => Pontuacao, (pontuacao) => pontuacao.modulo)
+    @OneToMany(() => Pontuacao, (pontuacao) => pontuacao.modulo, { nullable: true})
     pontuacoes?: Pontuacao[];
 
 }

@@ -7,10 +7,10 @@ export class Pontuacao {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Aluno, (aluno) => aluno.pontuacoes, { eager: true })
-    aluno: Aluno;
+    // @ManyToOne(() => Aluno, (aluno) => aluno.pontuacoes, { eager: true })
+    // aluno: Aluno;
 
-    @ManyToOne(() => Modulo, (modulo) => modulo.pontuacoes, { eager: true })
+    @ManyToOne(() => Modulo, (modulo) => modulo.pontuacoes, { eager: true, onDelete: 'CASCADE' })
     modulo: Modulo;
 
     @Column({ type: 'int' })
