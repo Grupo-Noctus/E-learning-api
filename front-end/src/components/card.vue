@@ -12,6 +12,7 @@
             <v-btn color="orange" text="edit" @click="funcOne(id)"></v-btn>
 
             <v-btn color="red" text="delete" @click="funcTwo(id)"></v-btn>
+
             <v-btn color="blue" text="modules" @click="funcThree(id)"></v-btn>
         </v-card-actions>
     </v-card>
