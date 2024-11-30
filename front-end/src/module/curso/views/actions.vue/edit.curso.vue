@@ -8,6 +8,7 @@
                 :func-one="courseEdit"
                 :func-two="courseDelete"
                 :func-three="seeModules"
+                :func-four="addModules"
             />
         </div>
     </div>
@@ -39,7 +40,11 @@ const courseDelete = async function (id: number): Promise<void> {
 }
 
 const seeModules = async function (id_curso: number): Promise<void> {
-    router.push({ name: 'Modules', params: { id: id_curso } })
+    router.push({ name: 'Module', params: { id: id_curso } })
+}
+
+const addModules = async function (id_curso: number): Promise<void> {
+    router.push({ name: 'Add-module', params: { id: id_curso } })
 }
 </script>
 

@@ -31,7 +31,7 @@ export default {
             titulo: title,
             descricao: description,
             imagem: imgCourse,
-            id_instrutor: 1,
+            id_instrutor: 2,
         })
     },
 
