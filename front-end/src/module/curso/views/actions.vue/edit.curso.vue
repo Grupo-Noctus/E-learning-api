@@ -39,7 +39,7 @@ const courseDelete = async function (id: number): Promise<void> {
 }
 
 const seeModules = async function (id_curso: number): Promise<void> {
-    router.push({ name: 'Module', params: { id: id_curso } })
+    router.push({ name: 'Modules', params: { id: id_curso } })
 }
 </script>
 

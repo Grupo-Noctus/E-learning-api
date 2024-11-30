@@ -27,7 +27,7 @@ export const cursoRoutes: RouteRecordRaw[] = [
                 component: EditForm,
             },
             {
-                path: '/curso/module/:id',
+                path: '/curso/module',
                 name: 'Module',
                 component: Modulo,
             },
