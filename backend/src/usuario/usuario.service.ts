@@ -22,9 +22,9 @@ export class UsuarioService {
 
     ) { }
 
-    async findOneByEmail(email: string): Promise<Usuario | undefined> {
-        return await this.usuario.findOne({ where: { email } });
-      }
+    async findById(id: number): Promise<Usuario> {
+        return await this.usuario.findOne({ where: { id_usuario: id } });
+    }
 
     //refatoração ok
     async criarUsuario(usuarioDTO: UsuarioDTO): Promise<{ message: string }> {

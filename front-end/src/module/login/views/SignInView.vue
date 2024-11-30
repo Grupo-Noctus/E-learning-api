@@ -24,6 +24,7 @@ const submitForm = async () => {
         };
 
         const response = await apiLogin.post('/usuario/criar', payload);
+        console.log(response)
 
         alert('Usuário cadastrado com sucesso!');
         console.log('Resposta do backend:', response.data);
@@ -38,9 +39,11 @@ const submitForm = async () => {
 <template>
     <v-card class="mx-auto" max-width="344" title="User Registration">
         <v-container>
-            <v-text-field v-model="name" color="primary" label="Nome" variant="underlined" required></v-text-field>
+            <v-text-field v-model="name" color="primary" label="Nome" variant="underlined" required>
+            </v-text-field>
 
-            <v-text-field v-model="email" color="primary" label="E-mail" variant="underlined" required></v-text-field>
+            <v-text-field v-model="email" color="primary" abel="E-mail" ariant="underlined" required>
+            </v-text-field>
 
             <v-text-field v-model="password" color="primary" label="Senha" placeholder="Insira sua senha"
                 variant="underlined" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
