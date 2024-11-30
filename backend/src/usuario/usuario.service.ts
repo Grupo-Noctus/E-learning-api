@@ -7,6 +7,7 @@ import { Papel } from './Entity/papelEnum';
 import { Aluno } from './Entity/aluno.entity';
 import { Instrutor } from './Entity/instrutor.entity';
 import { UsuarioUpadateDTO } from './dto/usuarioUpdate.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsuarioService {
@@ -21,6 +22,10 @@ export class UsuarioService {
 
     ) { }
 
+    async findOneByEmail(email: string): Promise<Usuario | undefined> {
+        return await this.usuario.findOne({ where: { email } });
+      }
+
     //refatoração ok
     async criarUsuario(usuarioDTO: UsuarioDTO): Promise<{ message: string }> {
         const usuario = new Usuario();
@@ -28,7 +33,7 @@ export class UsuarioService {
         try {
             usuario.nome = usuarioDTO.nome;
             usuario.email = usuarioDTO.email;
-            usuario.senha = usuarioDTO.senha;
+            usuario.senha = await bcrypt.hash(usuarioDTO.senha, 2);
             usuario.papel = usuarioDTO.papel;
             usuario.foto_perfil = usuarioDTO.foto_perfil;
 

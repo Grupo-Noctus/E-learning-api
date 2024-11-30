@@ -16,6 +16,7 @@ import { Modulo } from './curso/Entity/modulo.entity';
 import { Pergunta } from './curso/Entity/pergunta.entity';
 import { Pontuacao } from './curso/Entity/pontuacao.entity';
 import { Progresso } from './curso/Entity/progresso.entity';
+import { AuthModule } from './usuario/auth/auth.module';
 
 @Module({
   imports: [
@@ -43,7 +44,8 @@ import { Progresso } from './curso/Entity/progresso.entity';
       synchronize: true, 
     }),
     UsuarioModule, 
-    CursoModule
+    CursoModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

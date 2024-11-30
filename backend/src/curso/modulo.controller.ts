@@ -30,5 +30,4 @@ export class ModuloController {
     async reordenarModulos (@Param('id_curso') id_curso, @Body() reordenado: Modulo[]): Promise<{ message: String}>{
         return await this.moduloService.reordenarModulos(id_curso, reordenado);
     }
-    
 }

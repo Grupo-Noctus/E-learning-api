@@ -1,7 +1,7 @@
 <template>
     <div>
         testeIcaro
-        {{ userId }}
+        {{ refcourseId }}
     </div>
 </template>
 
@@ -11,7 +11,9 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 
-const userId = Number(route.params.id)
+const refcourseId = ref(0)
+
+refcourseId.value = Number(route.params.id)
 </script>
 
 <style scoped></style>
