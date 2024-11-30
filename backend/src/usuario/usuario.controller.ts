@@ -24,30 +24,30 @@ export function getFileInterceptor(fieldName: string) {
 }
 
 @Controller('usuario')
-export class UsuarioController{
-    constructor(
-        private readonly usuarioService: UsuarioService
-    ){}
+export class UsuarioController {
+  constructor(
+    private readonly usuarioService: UsuarioService
+  ) { }
 
-    @Post('criar')
-    @UseInterceptors(getFileInterceptor('foto_perfil'))
-    async criarUsuario(
-        @Body() usuarioDto: UsuarioDTO,
-        @UploadedFile() file: Express.Multer.File,
-    ): Promise<{ message: String }>{
-        if (file) {
-            usuarioDto.foto_perfil = file.filename;
-          }
-        return await this.usuarioService.criarUsuario(usuarioDto);
+  @Post('criar')
+  @UseInterceptors(getFileInterceptor('foto_perfil'))
+  async criarUsuario(
+    @Body() usuarioDto: UsuarioDTO,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<{ message: String }> {
+    if (file) {
+      usuarioDto.foto_perfil = file.filename;
     }
+    return await this.usuarioService.criarUsuario(usuarioDto);
+  }
 
-    @Patch('editar/:id')
-    async editarUsuario(@Param('id') id: number, @Body() usuarioUpdate: UsuarioUpadateDTO): Promise<{ message: String}>{
-      return await this.usuarioService.editarusuario(id, usuarioUpdate);
-    }
+  @Patch('editar/:id')
+  async editarUsuario(@Param('id') id: number, @Body() usuarioUpdate: UsuarioUpadateDTO): Promise<{ message: String }> {
+    return await this.usuarioService.editarusuario(id, usuarioUpdate);
+  }
 
-    @Delete('deletar/:id')
-    async deletarUsuario(@Param('id') id: number): Promise<{ message: String}>{
-      return await this.usuarioService.deletarUsuario(id);
-    }
+  @Delete('deletar/:id')
+  async deletarUsuario(@Param('id') id: number): Promise<{ message: String }> {
+    return await this.usuarioService.deletarUsuario(id);
+  }
 }
