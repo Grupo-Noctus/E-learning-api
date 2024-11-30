@@ -1,4 +1,3 @@
-
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { CursoService } from './curso.service';
 import { CursoDTO } from './dto/curso.dto';
