@@ -4,6 +4,7 @@ import EditCurso from './views/actions.vue/edit.curso.vue'
 import Curso from './views/curso.vue'
 import EditForm from './views/actions.vue/actionForm/editForm.vue'
 import Modulo from './views/actions.vue/modulo.vue'
+import AdModule from './views/actions.vue/add-module.vue'
 
 export const cursoRoutes: RouteRecordRaw[] = [
     {
@@ -27,9 +28,14 @@ export const cursoRoutes: RouteRecordRaw[] = [
                 component: EditForm,
             },
             {
-                path: '/curso/module',
+                path: '/curso/module/:id',
                 name: 'Module',
                 component: Modulo,
+            },
+            {
+                path: '/curso/:id/add-modules',
+                name: 'Add-module',
+                component: AdModule,
             },
         ],
     },
